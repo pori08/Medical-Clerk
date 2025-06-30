@@ -171,7 +171,7 @@ function renderHistory() {
         itemDiv.className = 'history-item';
         let resultsHtml = '<ul>';
         calc.results.forEach(r => {
-            resultsHtml += `<li>薬 (${r.index}): ${r.dose} 錠</li>`; // 薬剤名を削除
+            resultHTML += `<li>薬 (${r.index})<span class="separator">:</span> ${r.dose} 錠</li>`; // 薬剤名を削除
         });
         resultsHtml += '</ul>';
 

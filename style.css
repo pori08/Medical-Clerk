@@ -207,6 +207,10 @@ input, select {
 .card ul { padding-left: 20px; }
 .card li { margin-bottom: 0.5rem; }
 
+.card li .separator {
+    margin: 0 0.2em; /* コロンの左右に少しスペースを追加 */
+}
+
 .card.success { border: 1px solid var(--success-color); background-color: #f0fff4; }
 .card.error { border: 1px solid var(--error-color); background-color: #fff5f5; color: var(--error-color); }
 
