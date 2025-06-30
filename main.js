@@ -27,10 +27,6 @@ function createDrugItem(id) {
     div.dataset.id = id;
     div.innerHTML = `
         <div class="form-group">
-            <label for="drug-name-${id}">薬剤名</label>
-            <input type="text" id="drug-name-${id}" placeholder="例）アセトアミノフェン" required>
-        </div>
-        <div class="form-group">
             <label for="dose-amount-${id}">服薬量</label>
             <input type="number" id="dose-amount-${id}" placeholder="例）2" required>
         </div>
@@ -96,13 +92,12 @@ function calculate(event) {
     let results = [];
     let hasError = false;
 
-    drugItems.forEach(item => {
+    drugItems.forEach((item, index) => {
         const id = item.dataset.id;
-        const name = item.querySelector(`#drug-name-${id}`).value;
         const amount = Number(item.querySelector(`#dose-amount-${id}`).value);
         const unit = item.querySelector(`#dose-unit-${id}`).value;
 
-        if (!name || amount <= 0) {
+        if (amount <= 0) {
             hasError = true;
             return;
         }
@@ -113,11 +108,11 @@ function calculate(event) {
             case 'week': requiredDose = amount * Math.ceil(daysDiff / 7); break;
             case 'month': requiredDose = amount * Math.ceil(daysDiff / 28); break;
         }
-        results.push({ name, dose: requiredDose });
+        results.push({ index: index + 1, dose: requiredDose }); // 薬剤名を削除し、インデックスを追加
     });
 
     if (hasError) {
-        displayError('すべての薬剤名と服薬量を正しく入力してください。');
+        displayError('すべての服薬量を正しく入力してください。');
         return;
     }
 
@@ -139,7 +134,7 @@ function displayError(message) {
 function displaySuccess(daysDiff, results) {
     let resultHTML = `<p><b>予約日まであと ${daysDiff} 日</b></p><ul>`;
     results.forEach(r => {
-        resultHTML += `<li><strong>${r.name}:</strong> ${r.dose} 錠</li>`;
+        resultHTML += `<li>薬剤 ${r.index}: ${r.dose} 錠</li>`; // 薬剤名を削除
     });
     resultHTML += '</ul>';
     resultDiv.className = 'card success';
@@ -176,7 +171,7 @@ function renderHistory() {
         itemDiv.className = 'history-item';
         let resultsHtml = '<ul>';
         calc.results.forEach(r => {
-            resultsHtml += `<li><strong>${r.name}:</strong> ${r.dose} 錠</li>`;
+            resultsHtml += `<li>薬剤 ${r.index}: ${r.dose} 錠</li>`; // 薬剤名を削除
         });
         resultsHtml += '</ul>';
 

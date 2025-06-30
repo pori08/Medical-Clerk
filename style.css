@@ -83,7 +83,7 @@ body {
 
 .drug-item {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr auto;
+    grid-template-columns: 1fr 1fr auto;
     gap: 1rem;
     align-items: flex-end;
     padding: 1.5rem;
@@ -217,5 +217,5 @@ input, select {
         gap: 1rem;
         padding: 1rem;
     }
-    .drug-item .button-danger { grid-row: 4; }
+    .drug-item .button-danger { grid-row: 3; }
 }
