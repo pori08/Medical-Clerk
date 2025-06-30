@@ -44,8 +44,11 @@ function createDrugItem(id) {
     div.dataset.id = id;
     div.innerHTML = `
         <div class="form-group">
-            <label for="dose-amount-${id}">薬剤${convertToCircledNumber(id)} 服薬量</label>
-            <input type="number" id="dose-amount-${id}" placeholder="例）2" required>
+            <label for="dose-amount-${id}">服薬量</label>
+            <div class="input-with-prefix">
+                <span class="input-prefix">薬剤${convertToCircledNumber(id)}</span>
+                <input type="number" id="dose-amount-${id}" placeholder="例）2" required>
+            </div>
         </div>
         <div class="form-group">
             <label for="dose-unit-${id}">単位</label>

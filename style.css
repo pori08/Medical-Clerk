@@ -112,6 +112,33 @@ input, select {
     box-sizing: border-box;
 }
 
+.input-with-prefix {
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.input-with-prefix .input-prefix {
+    background-color: #e9ecef;
+    padding: 0.8rem 0.8rem;
+    font-size: 1rem;
+    color: var(--text-color);
+    white-space: nowrap;
+    border-right: 1px solid var(--border-color);
+}
+
+.input-with-prefix input[type="number"] {
+    border: none;
+    border-radius: 0;
+    padding-left: 0.5rem;
+}
+
+.input-with-prefix input[type="number"]:focus {
+    box-shadow: none;
+}
+
 /* --- ボタン --- */
 .button-primary, .button-secondary, .button-danger {
     border: none;
