@@ -28,7 +28,7 @@ function createDrugItem(id) {
     div.innerHTML = `
         <div class="form-group">
             <label for="drug-name-${id}">薬剤名</label>
-            <input type="text" id="drug-name-${id}" placeholder="例）〇〇錠" required>
+            <input type="text" id="drug-name-${id}" placeholder="例）アセトアミノフェン" required>
         </div>
         <div class="form-group">
             <label for="dose-amount-${id}">服薬量</label>
