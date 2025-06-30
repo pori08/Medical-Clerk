@@ -31,15 +31,11 @@ body {
     z-index: 1000;
 }
 
-.header-container {
-    max-width: 800px;
-    margin: 0 auto;
-}
-
-.app-header h1 {
+.header-container h1 {
     color: var(--primary-color);
     font-size: 1.5rem;
-    margin: 0;
+    margin: 0 auto;
+    max-width: 800px;
 }
 
 /* --- メインコンテンツ --- */
@@ -56,102 +52,122 @@ body {
     box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
 }
 
-/* --- フォーム --- */
-#calculation-form {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1.8rem;
-    margin-bottom: 1.5rem;
+/* --- フォーム全体 --- */
+#calculation-form .divider {
+    border: none;
+    border-top: 1px solid #e9ecef;
+    margin: 2rem 0;
 }
 
-.form-group label {
+/* --- 予約日設定 --- */
+.appointment-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.appointment-group label {
     display: flex;
     align-items: center;
     gap: 0.5rem;
     margin-bottom: 0.5rem;
     font-weight: 700;
-    color: var(--secondary-color);
-    font-size: 0.9rem;
+    font-size: 1.1rem;
 }
 
-input[type="number"],
-input[type="date"],
-select {
-    padding: 0.9rem 1.1rem;
+/* --- 薬剤リスト --- */
+#drug-list-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.drug-item {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr auto;
+    gap: 1rem;
+    align-items: flex-end;
+    padding: 1.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    background-color: #fdfdff;
+}
+
+.drug-item .form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.drug-item label {
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    color: var(--secondary-color);
+}
+
+input, select {
+    padding: 0.8rem 1rem;
     border: 1px solid var(--border-color);
     border-radius: 8px;
     font-size: 1rem;
     width: 100%;
     box-sizing: border-box;
-    transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-input:focus, select:focus {
-    outline: none;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
-}
-
-/* --- アクションボタン --- */
-.actions {
-    display: flex;
-    justify-content: flex-end;
-    margin-bottom: 2rem;
-}
-
-.button-secondary {
-    background-color: var(--secondary-color);
-    color: white;
+/* --- ボタン --- */
+.button-primary, .button-secondary, .button-danger {
     border: none;
-    padding: 0.7rem 1.2rem;
+    padding: 0.8rem 1.2rem;
     border-radius: 8px;
     cursor: pointer;
-    font-size: 0.9rem;
+    font-size: 1rem;
     font-weight: 700;
-    transition: background-color 0.2s;
+    transition: background-color 0.2s, transform 0.1s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
-.button-secondary:hover {
-    background-color: #5a6268;
+.button-primary {
+    background-color: var(--primary-color);
+    color: white;
+    width: 100%;
+    justify-content: center;
 }
+.button-primary:hover { background-color: var(--primary-dark); }
 
-/* --- 結果表示カード --- */
+.button-secondary { background-color: var(--secondary-color); color: white; }
+.button-secondary:hover { background-color: #5a6268; }
+
+.button-danger { background-color: var(--error-color); color: white; }
+.button-danger:hover { background-color: #c82333; }
+
+.add-drug-action { text-align: center; }
+.actions { text-align: center; }
+
+/* --- 結果表示 --- */
 .card {
-    border-left: 5px solid var(--secondary-color);
-    border-radius: 8px;
     padding: 1.5rem;
-    text-align: center;
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.5s ease, transform 0.5s ease;
+    border-radius: 12px;
+    margin-top: 2rem;
+    text-align: left;
 }
 
-.card.visible {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-.card p {
+.card p, .card ul {
     margin: 0;
-    font-size: 1.2rem;
-    font-weight: 500;
+    font-size: 1.1rem;
 }
 
-.card.success {
-    border-left-color: var(--success-color);
-    background-color: #f0fff4;
-}
+.card ul { padding-left: 20px; }
+.card li { margin-bottom: 0.5rem; }
 
-.card.error {
-    border-left-color: var(--error-color);
-    background-color: #fff5f5;
-    color: var(--error-color);
-    font-weight: 700;
-}
+.card.success { border: 1px solid var(--success-color); background-color: #f0fff4; }
+.card.error { border: 1px solid var(--error-color); background-color: #fff5f5; color: var(--error-color); }
 
 /* --- レスポンシブ --- */
-@media (min-width: 768px) {
-    #calculation-form {
-        grid-template-columns: repeat(3, 1fr);
+@media (max-width: 768px) {
+    .drug-item {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        padding: 1rem;
     }
+    .drug-item .button-danger { grid-row: 4; }
 }

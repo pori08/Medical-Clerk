@@ -7,7 +7,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
-    <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
@@ -21,33 +20,34 @@
 
     <main class="container">
         <div class="content-wrapper">
-            <form id="calculation-form" aria-labelledby="form-heading">
-                <div class="form-group">
-                    <label for="dose-amount"><i class="fa-solid fa-pills"></i> 服薬量</label>
-                    <input type="number" id="dose-amount" placeholder="例）2" aria-label="1回あたりの服薬量">
-                </div>
-
-                <div class="form-group">
-                    <label for="dose-unit"><i class="fa-solid fa-repeat"></i> 単位</label>
-                    <select id="dose-unit" aria-label="服薬の頻度">
-                        <option value="day">日</option>
-                        <option value="week">週</option>
-                        <option value="month">月</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
+            <form id="calculation-form">
+                <!-- 共通の予約日設定 -->
+                <div class="appointment-group">
                     <label for="appointment-date"><i class="fa-solid fa-calendar-days"></i> 次回予約日</label>
-                    <input type="date" id="appointment-date" aria-label="次回の予約日">
+                    <input type="date" id="appointment-date" aria-label="共通の次回予約日">
+                </div>
+
+                <hr class="divider">
+
+                <!-- 薬剤リスト -->
+                <div id="drug-list-container">
+                    <div id="drug-list"></div>
+                    <div class="add-drug-action">
+                         <button type="button" id="add-drug-button" class="button-secondary"><i class="fa-solid fa-plus"></i> 薬剤を追加</button>
+                    </div>
+                </div>
+
+                <hr class="divider">
+
+                <!-- 計算実行ボタン -->
+                <div class="actions">
+                    <button type="submit" id="calculate-button" class="button-primary"><i class="fa-solid fa-check"></i> 必要錠数を計算</button>
                 </div>
             </form>
 
-            <div class="actions">
-                <button id="clear-button" class="button-secondary"><i class="fa-solid fa-eraser"></i> クリア</button>
-            </div>
-
+            <!-- 結果表示エリア -->
             <div id="result" class="card" aria-live="polite">
-                <p>入力フォームに値を設定してください。</p>
+                <p>薬剤情報を入力し、予約日を設定してください。</p>
             </div>
         </div>
     </main>

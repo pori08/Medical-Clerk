@@ -1,106 +1,157 @@
 'use strict';
 
-// --- DOM要素の取得 ---
-const doseAmountInput = document.getElementById('dose-amount');
-const doseUnitInput = document.getElementById('dose-unit');
+// --- DOM要素 ---
+const form = document.getElementById('calculation-form');
 const appointmentDateInput = document.getElementById('appointment-date');
+const drugList = document.getElementById('drug-list');
+const addDrugButton = document.getElementById('add-drug-button');
 const resultDiv = document.getElementById('result');
-const resultParagraph = resultDiv.querySelector('p');
-const clearButton = document.getElementById('clear-button');
+
+let drugIdCounter = 0;
 
 /**
- * 今日の日付を 'YYYY-MM-DD' 形式で取得する (JST基準)
- * @returns {string} 今日の日付文字列
+ * 今日の日付を 'YYYY-MM-DD' 形式で取得 (JST)
  */
 function getTodayJstString() {
     return new Intl.DateTimeFormat('sv-SE', { timeZone: 'Asia/Tokyo' }).format(new Date());
 }
 
 /**
- * 日付入力の最小値を設定する
+ * 新しい薬剤入力フォームのHTMLを生成
  */
-function setMinDate() {
-    appointmentDateInput.min = getTodayJstString();
+function createDrugItem(id) {
+    const div = document.createElement('div');
+    div.className = 'drug-item';
+    div.dataset.id = id;
+    div.innerHTML = `
+        <div class="form-group">
+            <label for="drug-name-${id}">薬剤名</label>
+            <input type="text" id="drug-name-${id}" placeholder="例）〇〇錠" required>
+        </div>
+        <div class="form-group">
+            <label for="dose-amount-${id}">服薬量</label>
+            <input type="number" id="dose-amount-${id}" placeholder="例）2" required>
+        </div>
+        <div class="form-group">
+            <label for="dose-unit-${id}">単位</label>
+            <select id="dose-unit-${id}">
+                <option value="day">日</option>
+                <option value="week">週</option>
+                <option value="month">月</option>
+            </select>
+        </div>
+        <button type="button" class="button-danger remove-drug-button"><i class="fa-solid fa-trash"></i></button>
+    `;
+    return div;
 }
 
 /**
- * 計算と結果表示を行うメイン関数
+ * 薬剤フォームを追加
  */
-function calculateAndDisplay() {
-    // 結果表示を一旦隠す
-    resultDiv.classList.remove('visible');
+function addDrug() {
+    drugIdCounter++;
+    const newDrugItem = createDrugItem(drugIdCounter);
+    drugList.appendChild(newDrugItem);
+}
 
-    // --- 入力値の取得 ---
-    const doseAmount = Number(doseAmountInput.value);
-    const doseUnit = doseUnitInput.value;
+/**
+ * 薬剤フォームを削除
+ */
+function removeDrug(event) {
+    if (event.target.closest('.remove-drug-button')) {
+        const item = event.target.closest('.drug-item');
+        item.remove();
+    }
+}
+
+/**
+ * 計算を実行し、結果を表示
+ */
+function calculate(event) {
+    event.preventDefault(); // フォームのデフォルト送信をキャンセル
+
     const appointmentDateStr = appointmentDateInput.value;
-
-    // --- バリデーション ---
-    if (!doseAmount || !appointmentDateStr || doseAmount <= 0) {
-        resultParagraph.textContent = '服薬量と予約日を正しく入力してください。';
-        resultDiv.className = 'card'; // スタイルをリセット
-        resultDiv.classList.add('visible');
+    if (!appointmentDateStr) {
+        displayError('予約日を設定してください。');
         return;
     }
 
-    // --- 日付差の計算 ---
     const today = new Date(getTodayJstString() + 'T00:00:00Z');
     const appointmentDate = new Date(appointmentDateStr + 'T00:00:00Z');
     const daysDiff = Math.round((appointmentDate - today) / (1000 * 60 * 60 * 24));
 
     if (daysDiff < 0) {
-        resultParagraph.textContent = 'エラー: 過去の日付は選択できません。';
-        resultDiv.className = 'card error';
-        resultDiv.classList.add('visible');
+        displayError('エラー: 過去の日付は選択できません。');
         return;
     }
 
-    // --- 必要錠数の計算 ---
-    let requiredDose = 0;
-    switch (doseUnit) {
-        case 'day':
-            requiredDose = doseAmount * daysDiff;
-            break;
-        case 'week':
-            requiredDose = doseAmount * Math.ceil(daysDiff / 7);
-            break;
-        case 'month':
-            requiredDose = doseAmount * Math.ceil(daysDiff / 28);
-            break;
+    const drugItems = drugList.querySelectorAll('.drug-item');
+    if (drugItems.length === 0) {
+        displayError('薬剤を1つ以上追加してください。');
+        return;
     }
 
-    // --- 結果の表示 ---
-    resultParagraph.textContent = `予約日まであと ${daysDiff} 日。必要錠数は ${requiredDose} 錠です。`;
-    resultDiv.className = 'card success';
-    
-    // 少し遅延させて表示することでアニメーションを発火
-    setTimeout(() => {
-        resultDiv.classList.add('visible');
-    }, 10);
+    let results = [];
+    let hasError = false;
+
+    drugItems.forEach(item => {
+        const id = item.dataset.id;
+        const name = item.querySelector(`#drug-name-${id}`).value;
+        const amount = Number(item.querySelector(`#dose-amount-${id}`).value);
+        const unit = item.querySelector(`#dose-unit-${id}`).value;
+
+        if (!name || amount <= 0) {
+            hasError = true;
+            return;
+        }
+
+        let requiredDose = 0;
+        switch (unit) {
+            case 'day': requiredDose = amount * daysDiff; break;
+            case 'week': requiredDose = amount * Math.ceil(daysDiff / 7); break;
+            case 'month': requiredDose = amount * Math.ceil(daysDiff / 28); break;
+        }
+        results.push({ name, dose: requiredDose });
+    });
+
+    if (hasError) {
+        displayError('すべての薬剤名と服薬量を正しく入力してください。');
+        return;
+    }
+
+    displaySuccess(daysDiff, results);
 }
 
 /**
- * フォームをクリアする関数
+ * エラーメッセージを表示
  */
-function clearForm() {
-    doseAmountInput.value = '';
-    doseUnitInput.value = 'day';
-    appointmentDateInput.value = '';
-    resultParagraph.textContent = '入力フォームに値を設定してください。';
-    resultDiv.className = 'card';
-    resultDiv.classList.add('visible');
+function displayError(message) {
+    resultDiv.className = 'card error';
+    resultDiv.innerHTML = `<p>${message}</p>`;
+}
+
+/**
+ * 成功結果を表示
+ */
+function displaySuccess(daysDiff, results) {
+    let resultHTML = `<p><b>予約日まであと ${daysDiff} 日</b></p><ul>`;
+    results.forEach(r => {
+        resultHTML += `<li><strong>${r.name}:</strong> ${r.dose} 錠</li>`;
+    });
+    resultHTML += '</ul>';
+    resultDiv.className = 'card success';
+    resultDiv.innerHTML = resultHTML;
 }
 
 // --- 初期化処理 ---
 function initialize() {
-    setMinDate();
-    doseAmountInput.addEventListener('input', calculateAndDisplay);
-    doseUnitInput.addEventListener('change', calculateAndDisplay);
-    appointmentDateInput.addEventListener('change', calculateAndDisplay);
-    clearButton.addEventListener('click', clearForm);
-    // 初期表示
-    setTimeout(() => calculateAndDisplay(), 100);
+    appointmentDateInput.min = getTodayJstString();
+    addDrugButton.addEventListener('click', addDrug);
+    drugList.addEventListener('click', removeDrug);
+    form.addEventListener('submit', calculate);
+    // 初期状態で1つ薬剤フォームを追加
+    addDrug();
 }
 
-// --- アプリケーションの開始 ---
+// --- アプリケーション開始 ---
 initialize();
