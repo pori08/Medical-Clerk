@@ -19,6 +19,23 @@ function getTodayJstString() {
 }
 
 /**
+ * 数字を丸囲み数字に変換するヘルパー関数
+ * @param {number} num - 変換する数字
+ * @returns {string} 丸囲み数字の文字列、または元の数字（対応範囲外の場合）
+ */
+function convertToCircledNumber(num) {
+    if (num >= 1 && num <= 10) {
+        // Unicodeの丸囲み数字の範囲 (①はU+2460)
+        return String.fromCharCode(0x2460 + num - 1);
+    } else if (num >= 11 && num <= 20) {
+        // Unicodeの丸囲み数字の範囲 (⑪はU+246A)
+        return String.fromCharCode(0x246A + num - 11);
+    } else {
+        return String(num); // 対応範囲外はそのままの数字を返す
+    }
+}
+
+/**
  * 新しい薬剤入力フォームのHTMLを生成
  */
 function createDrugItem(id) {
@@ -134,7 +151,7 @@ function displayError(message) {
 function displaySuccess(daysDiff, results) {
     let resultHTML = `<p><b>予約日まであと ${daysDiff} 日</b></p><ul>`;
     results.forEach(r => {
-        resultHTML += `<li>薬剤${r.index} は ${r.dose} 錠</li>`; // 薬剤名を削除
+        resultHTML += `<li>薬剤${convertToCircledNumber(r.index)} は ${r.dose} 錠</li>`;
     });
     resultHTML += '</ul>';
     resultDiv.className = 'card success';
@@ -171,7 +188,7 @@ function renderHistory() {
         itemDiv.className = 'history-item';
         let resultsHtml = '<ul>';
         calc.results.forEach(r => {
-            resultsHtml += `<li>薬 (${r.index}) は ${r.dose} 錠</li>`;
+            resultsHtml += `<li>薬剤${convertToCircledNumber(r.index)} は ${r.dose} 錠</li>`;
         });
         resultsHtml += '</ul>';
 
