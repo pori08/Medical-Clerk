@@ -234,86 +234,86 @@ input, select {
 /* --- レスポンシブ --- */
 @media (max-width: 768px) {
     body {
-        padding-top: 50px; /* ヘッダーの高さに合わせて調整 */
+        padding-top: 45px; /* ヘッダーの高さに合わせて調整 */
     }
 
     .app-header {
-        padding: 0.6rem 0.8rem;
+        padding: 0.5rem 0.8rem;
     }
 
     .app-header h1 {
-        font-size: 1.2rem;
+        font-size: 1.1rem;
     }
 
     .container {
-        padding: 0.8rem;
+        padding: 0.5rem;
     }
 
     .content-wrapper {
-        padding: 1rem;
-        border-radius: 8px;
+        padding: 0.8rem;
+        border-radius: 6px;
     }
 
     #calculation-form .divider {
-        margin: 1rem 0;
+        margin: 0.8rem 0;
     }
 
     .appointment-group label {
-        font-size: 0.9rem;
+        font-size: 0.85rem;
     }
 
     #drug-list-container {
-        gap: 0.8rem;
+        gap: 0.6rem;
     }
 
     .drug-item {
-        gap: 0.6rem;
-        padding: 0.8rem;
+        gap: 0.5rem;
+        padding: 0.7rem;
     }
 
     .drug-item .drug-number {
-        font-size: 0.95rem;
-        margin-bottom: 0.2rem;
+        font-size: 0.9rem;
+        margin-bottom: 0.1rem;
     }
 
     input, select {
-        padding: 0.6rem 0.7rem;
-        font-size: 0.85rem;
+        padding: 0.5rem 0.6rem;
+        font-size: 0.8rem;
     }
 
     .button-primary, .button-secondary, .button-danger {
-        padding: 0.6rem 0.9rem;
-        font-size: 0.85rem;
+        padding: 0.5rem 0.8rem;
+        font-size: 0.8rem;
     }
 
     .card {
         padding: 0.8rem;
-        margin-top: 1rem;
+        margin-top: 0.8rem;
     }
 
     .card p, .card ul {
-        font-size: 0.95rem;
+        font-size: 0.9rem;
     }
 
     #history-container {
-        margin-top: 1.5rem;
-        padding-top: 1rem;
+        margin-top: 1rem;
+        padding-top: 0.8rem;
     }
 
     #history-container h2 {
-        font-size: 1.1rem;
-        margin-bottom: 0.8rem;
+        font-size: 1rem;
+        margin-bottom: 0.6rem;
     }
 
     .history-item {
-        padding: 0.8rem;
+        padding: 0.7rem;
     }
 
     .history-item .date {
-        font-size: 0.75rem;
+        font-size: 0.7rem;
     }
 
     .history-actions {
-        margin-top: 1rem;
+        margin-top: 0.8rem;
     }
 }
