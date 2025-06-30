@@ -61,6 +61,7 @@ function calculateAndDisplay() {
 
     // --- 結果の表示 ---
     resultDiv.classList.remove('error');
+    resultDiv.classList.add('success');
     resultParagraph.textContent = `予約日まであと ${daysDiff} 日。必要錠数は ${requiredDose} 錠です。`;
 }
 
