@@ -83,7 +83,10 @@ body {
 
 .drug-item {
     display: grid;
-    grid-template-columns: 1fr 1fr auto;
+    grid-template-columns: 1fr 1fr auto; /* 薬剤番号の見出しが追加されるため、レイアウトを調整 */
+    grid-template-areas:
+        "number number remove"
+        "amount unit remove";
     gap: 1rem;
     align-items: flex-end;
     padding: 1.5rem;
@@ -91,6 +94,18 @@ body {
     border-radius: 12px;
     background-color: #fdfdff;
 }
+
+.drug-item .drug-number {
+    grid-area: number;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+}
+
+.drug-item .form-group:nth-of-type(1) { grid-area: amount; }
+.drug-item .form-group:nth-of-type(2) { grid-area: unit; }
+.drug-item .remove-drug-button { grid-area: remove; }
 
 .drug-item .form-group {
     display: flex;
@@ -110,33 +125,6 @@ input, select {
     font-size: 1rem;
     width: 100%;
     box-sizing: border-box;
-}
-
-.input-with-prefix {
-    display: flex;
-    align-items: center;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    overflow: hidden;
-}
-
-.input-with-prefix .input-prefix {
-    background-color: #e9ecef;
-    padding: 0.8rem 0.8rem;
-    font-size: 1rem;
-    color: var(--text-color);
-    white-space: nowrap;
-    border-right: 1px solid var(--border-color);
-}
-
-.input-with-prefix input[type="number"] {
-    border: none;
-    border-radius: 0;
-    padding-left: 0.5rem;
-}
-
-.input-with-prefix input[type="number"]:focus {
-    box-shadow: none;
 }
 
 /* --- ボタン --- */
@@ -241,8 +229,13 @@ input, select {
 @media (max-width: 768px) {
     .drug-item {
         grid-template-columns: 1fr;
+        grid-template-areas:
+            "number"
+            "amount"
+            "unit"
+            "remove";
         gap: 1rem;
         padding: 1rem;
     }
-    .drug-item .button-danger { grid-row: 3; }
+    .drug-item .button-danger { grid-row: auto; }
 }
