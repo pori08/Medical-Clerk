@@ -184,7 +184,7 @@ function renderHistory() {
 
     clearHistoryButton.style.display = 'block';
 
-    history.forEach(calc => {
+    history.forEach((calc, index) => {
         const itemDiv = document.createElement('div');
         itemDiv.className = 'history-item';
         let resultsHtml = '<ul>';
@@ -194,11 +194,33 @@ function renderHistory() {
         resultsHtml += '</ul>';
 
         itemDiv.innerHTML = `
-            <div class="date">計算日時: ${calc.date} / 予約日: ${calc.appointmentDate} (あと ${calc.daysDiff} 日)</div>
+            <div class="history-item-header">
+                <div class="date">計算日時: ${calc.date} / 予約日: ${calc.appointmentDate} (あと ${calc.daysDiff} 日)</div>
+                <button type="button" class="button-danger delete-history-item" data-index="${index}"><i class="fa-solid fa-trash"></i> 削除</button>
+            </div>
             ${resultsHtml}
         `;
         historyList.appendChild(itemDiv);
     });
+
+    // 個別削除ボタンのイベントリスナーを設定
+    document.querySelectorAll('.delete-history-item').forEach(button => {
+        button.addEventListener('click', deleteHistoryItem);
+    });
+}
+
+/**
+ * 個別の履歴項目を削除
+ */
+function deleteHistoryItem(event) {
+    const indexToDelete = event.currentTarget.dataset.index;
+    let history = JSON.parse(localStorage.getItem('calculationHistory') || '[]');
+    
+    if (confirm('この履歴項目を削除しますか？')) {
+        history.splice(indexToDelete, 1);
+        localStorage.setItem('calculationHistory', JSON.stringify(history));
+        renderHistory(); // 履歴を再描画
+    }
 }
 
 /**

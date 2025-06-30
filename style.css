@@ -192,10 +192,17 @@ input, select {
     padding: 1.5rem;
 }
 
+.history-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
 .history-item .date {
     font-size: 0.9rem;
     color: var(--secondary-color);
-    margin-bottom: 1rem;
+    margin-bottom: 0;
 }
 
 .history-item ul {
