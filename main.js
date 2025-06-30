@@ -134,7 +134,7 @@ function displayError(message) {
 function displaySuccess(daysDiff, results) {
     let resultHTML = `<p><b>予約日まであと ${daysDiff} 日</b></p><ul>`;
     results.forEach(r => {
-        resultHTML += `<li>薬剤 ${r.index}: ${r.dose} 錠</li>`; // 薬剤名を削除
+        resultHTML += `<li>薬剤${r.index} は ${r.dose} 錠</li>`; // 薬剤名を削除
     });
     resultHTML += '</ul>';
     resultDiv.className = 'card success';
