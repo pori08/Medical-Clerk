@@ -1,37 +1,52 @@
-/* --- 全体設定 --- */
-body {
-    font-family: sans-serif;
-    background-color: #f4f7f9;
-    color: #333;
-    margin: 0;
-    padding: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    min-height: 100vh;
+/* --- 基本設定 & フォント --- */
+:root {
+    --primary-color: #007bff; /* メインカラー (青) */
+    --secondary-color: #6c757d; /* サブカラー (グレー) */
+    --background-color: #f8f9fa; /* 背景色 */
+    --surface-color: #ffffff;    /* カードなどの表面色 */
+    --text-color: #212529;       /* 基本テキストカラー */
+    --border-color: #dee2e6;     /* 境界線 */
+    --error-color: #dc3545;       /* エラーカラー (赤) */
+    --success-color: #28a745;     /* 成功カラー (緑) */
 }
 
+body {
+    font-family: 'Noto Sans JP', sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    margin: 0;
+    padding: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    box-sizing: border-box;
+}
+
+/* --- コンテナと見出し --- */
 .container {
     width: 100%;
     max-width: 800px;
-    background: #fff;
-    padding: 20px 30px;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    background: var(--surface-color);
+    padding: 2.5rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
 }
 
 h1 {
     text-align: center;
-    color: #2c3e50;
-    margin-bottom: 24px;
+    color: var(--primary-color);
+    margin-bottom: 2rem;
+    font-weight: 700;
 }
 
 /* --- フォーム --- */
 #calculation-form {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    margin-bottom: 24px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
 }
 
 .form-group {
@@ -40,37 +55,41 @@ h1 {
 }
 
 label {
-    margin-bottom: 8px;
-    font-weight: bold;
-    color: #555;
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+    color: var(--secondary-color);
+    font-size: 0.9rem;
 }
 
 input[type="number"],
 input[type="date"],
 select {
-    padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 16px;
+    padding: 0.8rem 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 1rem;
     width: 100%;
-    box-sizing: border-box; /* パディングを幅に含める */
+    box-sizing: border-box;
+    transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-input:focus, select:focus {
+input[type="number"]:focus,
+input[type="date"]:focus,
+select:focus {
     outline: none;
-    border-color: #007bff;
-    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
 }
 
-/* --- 結果表示 --- */
+/* --- 結果表示カード --- */
 .card {
-    background-color: #f8f9fa;
-    border: 1px solid #e9ecef;
-    border-radius: 8px; /* 角丸 */
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05); /* 影 */
-    padding: 20px;
+    background-color: #fdfdff;
+    border-left: 5px solid var(--secondary-color);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    padding: 1.5rem;
     text-align: center;
-    min-height: 60px;
+    min-height: 70px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -80,24 +99,26 @@ input:focus, select:focus {
 .card p {
     margin: 0;
     font-size: 1.1rem;
-    color: #343a40;
+    font-weight: 500;
+}
+
+/* 結果の状態に応じたスタイル */
+.card.success {
+    border-left-color: var(--success-color);
+    background-color: #f0fff4;
 }
 
 .card.error {
-    background-color: #fff3f3;
-    border-color: #fdb8b8;
-    color: #c51212;
+    border-left-color: var(--error-color);
+    background-color: #fff5f5;
+    color: var(--error-color);
+    font-weight: 700;
 }
 
-
-/* --- レスポンシブデザイン (PC幅) --- */
+/* --- レスポンシブデザイン --- */
 @media (min-width: 768px) {
     #calculation-form {
-        flex-direction: row; /* 横並びにする */
-        align-items: flex-end; /* ラベルと入力欄の高さを揃える */
-    }
-
-    .form-group {
-        flex: 1; /* 各グループが均等に幅を取る */
+        grid-template-columns: repeat(3, 1fr);
+        align-items: flex-end;
     }
 }
