@@ -6,6 +6,8 @@ const appointmentDateInput = document.getElementById('appointment-date');
 const drugList = document.getElementById('drug-list');
 const addDrugButton = document.getElementById('add-drug-button');
 const resultDiv = document.getElementById('result');
+const historyList = document.getElementById('history-list');
+const clearHistoryButton = document.getElementById('clear-history-button');
 
 let drugIdCounter = 0;
 
@@ -120,6 +122,7 @@ function calculate(event) {
     }
 
     displaySuccess(daysDiff, results);
+    saveHistory({ date: new Date().toLocaleString('ja-JP'), appointmentDate: appointmentDateStr, daysDiff, results });
 }
 
 /**
@@ -143,14 +146,70 @@ function displaySuccess(daysDiff, results) {
     resultDiv.innerHTML = resultHTML;
 }
 
+/**
+ * 計算履歴をlocalStorageに保存
+ */
+function saveHistory(calculation) {
+    const history = JSON.parse(localStorage.getItem('calculationHistory') || '[]');
+    history.unshift(calculation); // 最新のものを先頭に追加
+    localStorage.setItem('calculationHistory', JSON.stringify(history));
+    renderHistory();
+}
+
+/**
+ * 計算履歴をlocalStorageから読み込み、表示
+ */
+function renderHistory() {
+    const history = JSON.parse(localStorage.getItem('calculationHistory') || '[]');
+    historyList.innerHTML = ''; // 一度クリア
+
+    if (history.length === 0) {
+        historyList.innerHTML = '<p style="text-align: center; color: var(--secondary-color);">履歴はありません。</p>';
+        clearHistoryButton.style.display = 'none';
+        return;
+    }
+
+    clearHistoryButton.style.display = 'block';
+
+    history.forEach(calc => {
+        const itemDiv = document.createElement('div');
+        itemDiv.className = 'history-item';
+        let resultsHtml = '<ul>';
+        calc.results.forEach(r => {
+            resultsHtml += `<li><strong>${r.name}:</strong> ${r.dose} 錠</li>`;
+        });
+        resultsHtml += '</ul>';
+
+        itemDiv.innerHTML = `
+            <div class="date">計算日時: ${calc.date} / 予約日: ${calc.appointmentDate} (あと ${calc.daysDiff} 日)</div>
+            ${resultsHtml}
+        `;
+        historyList.appendChild(itemDiv);
+    });
+}
+
+/**
+ * 履歴をすべて消去
+ */
+function clearAllHistory() {
+    if (confirm('すべての計算履歴を消去しますか？')) {
+        localStorage.removeItem('calculationHistory');
+        renderHistory();
+    }
+}
+
 // --- 初期化処理 ---
 function initialize() {
     appointmentDateInput.min = getTodayJstString();
     addDrugButton.addEventListener('click', addDrug);
     drugList.addEventListener('click', removeDrug);
     form.addEventListener('submit', calculate);
+    clearHistoryButton.addEventListener('click', clearAllHistory);
+
     // 初期状態で1つ薬剤フォームを追加
     addDrug();
+    // 履歴を読み込み表示
+    renderHistory();
 }
 
 // --- アプリケーション開始 ---
