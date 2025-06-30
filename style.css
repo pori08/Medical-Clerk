@@ -1,0 +1,103 @@
+/* --- 全体設定 --- */
+body {
+    font-family: sans-serif;
+    background-color: #f4f7f9;
+    color: #333;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+}
+
+.container {
+    width: 100%;
+    max-width: 800px;
+    background: #fff;
+    padding: 20px 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+h1 {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 24px;
+}
+
+/* --- フォーム --- */
+#calculation-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 24px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #555;
+}
+
+input[type="number"],
+input[type="date"],
+select {
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    width: 100%;
+    box-sizing: border-box; /* パディングを幅に含める */
+}
+
+input:focus, select:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+/* --- 結果表示 --- */
+.card {
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 8px; /* 角丸 */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05); /* 影 */
+    padding: 20px;
+    text-align: center;
+    min-height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.card p {
+    margin: 0;
+    font-size: 1.1rem;
+    color: #343a40;
+}
+
+.card.error {
+    background-color: #fff3f3;
+    border-color: #fdb8b8;
+    color: #c51212;
+}
+
+
+/* --- レスポンシブデザイン (PC幅) --- */
+@media (min-width: 768px) {
+    #calculation-form {
+        flex-direction: row; /* 横並びにする */
+        align-items: flex-end; /* ラベルと入力欄の高さを揃える */
+    }
+
+    .form-group {
+        flex: 1; /* 各グループが均等に幅を取る */
+    }
+}
