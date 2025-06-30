@@ -56,7 +56,6 @@ function createDrugItem(id) {
                 <option value="month">月</option>
             </select>
         </div>
-        <button type="button" class="button-danger remove-drug-button"><i class="fa-solid fa-trash"></i></button>
     `;
     return div;
 }
@@ -68,16 +67,6 @@ function addDrug() {
     drugIdCounter++;
     const newDrugItem = createDrugItem(drugIdCounter);
     drugList.appendChild(newDrugItem);
-}
-
-/**
- * 薬剤フォームを削除
- */
-function removeDrug(event) {
-    if (event.target.closest('.remove-drug-button')) {
-        const item = event.target.closest('.drug-item');
-        item.remove();
-    }
 }
 
 /**
@@ -237,7 +226,6 @@ function clearAllHistory() {
 function initialize() {
     appointmentDateInput.min = getTodayJstString();
     addDrugButton.addEventListener('click', addDrug);
-    drugList.addEventListener('click', removeDrug);
     form.addEventListener('submit', calculate);
     clearHistoryButton.addEventListener('click', clearAllHistory);
 
